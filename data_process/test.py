@@ -1,7 +1,7 @@
 import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
-
+from pandas import Series, DataFrame
 """ numpy 生成数组 """
 
 
@@ -108,16 +108,36 @@ def test6():
     print(result)
 
 
-def func(n):
-    while n > 5:
-        n -= 1
-        yield n
+""" pands-Series """
 
 
-def main():
-    test6()
+def test7():
+    obj = pd.Series([4, 5, 6, 7])
+    print(obj)
+    print(obj.values)
+    print(obj.index)
+
+    obj1 = pd.Series([1, 2, 3, 4], index=['a', 'b', 'c', 'd'])
+    print(obj1)
+    print(obj1.values)
+    print(obj1.index)
+
+    print(obj[1])
+
+
+""" pandas-DataFrame """
+
+
+def test8():
+    data = {'state': ['Ohio', 'Ohio', 'Ohio', 'Nevada', 'Nevada', 'Nevada'],
+            'year': [2000, 2001, 2002, 2001, 2002, 2003],
+            'pop': [1.5, 1.7, 3.6, 2.4, 2.9, 3.2]}
+    frame = pd.DataFrame(data)
+    print(frame)
+
+    frame['hello'] = 1
+    print(frame)
 
 
 if __name__ == '__main__':
-    for i in func(10):
-        print(i)
+    test8()
