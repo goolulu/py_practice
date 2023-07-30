@@ -2,6 +2,7 @@ import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
 from pandas import Series, DataFrame
+import decimal
 """ numpy 生成数组 """
 
 
@@ -134,10 +135,11 @@ def test8():
             'pop': [1.5, 1.7, 3.6, 2.4, 2.9, 3.2]}
     frame = pd.DataFrame(data)
     print(frame)
-
-    frame['hello'] = 1
+    print(frame['state'])
+    print(frame.loc[3])
+    frame.columns.name = 'serino'
     print(frame)
 
 
 if __name__ == '__main__':
-    test8()
+
