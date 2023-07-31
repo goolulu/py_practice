@@ -4,11 +4,19 @@ import pymysql
 import akshare as ak
 
 
-class StockSectorSummary(object):
+class StockSectorSummary(DataSourceManager):
     def __init__(self, data):
         self._data = data
 
-    def write_data(self):
+    @property
+    def data(self):
+        return self._data
+
+    @data.setter
+    def data(self, data):
+        self._data = data
+
+    def write_data(self, data):
         conn = pymysql.connect(host='47.107.60.105', port=3306,
                                user='root', passwd='123456', database='market', charset='utf8mb4')
         try:
@@ -22,7 +30,7 @@ class StockSectorSummary(object):
 
     def get_data(self):
         frame = ak.stock_szse_sector_summary(symbol='当月', date='202306')
-        self._data = frame
+        self.data = frame
 
 
 def main():

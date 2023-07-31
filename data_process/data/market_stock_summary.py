@@ -21,21 +21,25 @@ class MarketStockSummary(DataSourceManager):
 
     def write_data(self):
         self.fetch_data()
-        insert_sql = 'insert into market_stock_summary(assets_type, quantity, balance, total_market_value, liquid_market_value) values(%s, %f, %f, %f, %f)'
+        insert_sql = 'insert into market_stock_summary(assets_type, quantity, balance, total_market_value, liquid_market_value) values(%s, %s, %s, %s, %s)'
+
         conn = self.get_datasource()
         try:
             with conn.cursor() as cursor:
-                rows = cursor.execute(insert_sql, self._data)
+                data_list = self.data.values.tolist()
+                rows = cursor.executemany(insert_sql, data_list)
+                conn.commit()
         except pymysql.MySQLError as error:
             conn.rollback()
             print(error)
         finally:
             conn.close()
+
         return rows
 
     def fetch_data(self):
-        frame = akshare.stock_szse_summary()
-        self._data = frame
+        frame = akshare.stock_szse_summary(date='20230731')
+        self.data = frame.fillna(value=0)
 
 
 def main():

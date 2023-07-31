@@ -4,7 +4,6 @@ create table `market_stock_summary`(
     `balance` decimal(30) null default 0.0 comment '成交金额',
     `total_market_value` decimal(30) null default 0.0 comment '总市值',
     `liquid_market_value` decimal(30) null default 0.0 comment '流动市值',
-    primary key pk_assets_type(assets_type)
 );
 
 insert into
@@ -16,4 +15,4 @@ insert into
         liquid_market_value
     )
 values
-(% s, % f, % f, % f, % f)
+    (% s, % f, % f, % f, % f)

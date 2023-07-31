@@ -20,3 +20,6 @@ class DataSourceManager():
 
     def write_data(self, data):
         pass
+
+    def fetch_data(self):
+        pass
