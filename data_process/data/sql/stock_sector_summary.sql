@@ -7,6 +7,5 @@ create table `stock_sector_summary`(
     `trade_quantity` decimal(30) not null comment '成交股数-股数',
     `total_quantity_ratio` decimal(10, 8) not null comment '成交股数-占总计',
     `trade_valume` decimal(30) not null comment '成交笔数-笔',
-    `total_valume_ratio` decimal(10, 8) not null comment '成交笔数-占总计',
-    primary key pk_name(name)
+    `total_valume_ratio` decimal(10, 8) not null comment '成交笔数-占总计'
 );

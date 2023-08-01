@@ -1,6 +1,7 @@
 
 import pymysql
 import akshare
+from trade_date_hist import TradeDate
 
 from datasource_manager import DataSourceManager
 
@@ -19,15 +20,15 @@ class MarketStockSummary(DataSourceManager):
         self._data = data
         pass
 
-    def write_data(self):
-        self.fetch_data()
-        insert_sql = 'insert into market_stock_summary(assets_type, quantity, balance, total_market_value, liquid_market_value) values(%s, %s, %s, %s, %s)'
+    def write_data(self, date):
+        insert_sql = 'insert into market_stock_summary(assets_type, quantity, balance, total_market_value, liquid_market_value, trade_date) values(%s, %s, %s, %s, %s, %s)'
 
         conn = self.get_datasource()
         try:
             with conn.cursor() as cursor:
-                data_list = self.data.values.tolist()
-                rows = cursor.executemany(insert_sql, data_list)
+                self.data['date'] = date
+                rows = cursor.executemany(
+                    insert_sql, self.data.values.tolist())
                 conn.commit()
         except pymysql.MySQLError as error:
             conn.rollback()
@@ -37,14 +38,19 @@ class MarketStockSummary(DataSourceManager):
 
         return rows
 
-    def fetch_data(self):
-        frame = akshare.stock_szse_summary(date='20230731')
+    def fetch_data(self, date):
+        frame = akshare.stock_szse_summary(date)
         self.data = frame.fillna(value=0)
+        self.write_data(date)
 
 
 def main():
     mss = MarketStockSummary()
-    mss.write_data()
+    td = TradeDate()
+    calendar_list = td.select_trade_date(
+        first_date='20190101', end_date='20230731')
+    for date in calendar_list:
+        mss.fetch_data(date[0])
 
 
 if __name__ == '__main__':

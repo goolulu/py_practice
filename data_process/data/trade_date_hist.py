@@ -37,10 +37,27 @@ class TradeDate(DataSourceManager):
         frame = ak.tool_trade_date_hist_sina()
         self._data = frame
 
+    def select_trade_date(self, first_date, end_date):
+        conn = self.get_datasource()
+        select_sql = 'select * from trade_date where date between %s and %s'
+        try:
+            with conn.cursor() as cursor:
+                cursor.execute(select_sql, (first_date, end_date))
+                data = cursor.fetchall()
+                return data
+        except pymysql.MySQLError as error:
+            print(error)
+            conn.rollback()
+        finally:
+            conn.close()
+
 
 def main():
     td = TradeDate()
+    td.fetch_data()
     td.write_data()
+    d = td.select_trade_date('20230701', '20230731')
+    print(d)
 
 
 if __name__ == '__main__':
