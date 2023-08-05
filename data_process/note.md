@@ -19,5 +19,7 @@ DataFrame是一个表格型的数据结构，有列索引也有行索引
 
 类似Java中的Map<String,List<Object>> 
 
+DataFrame 转[] df.values.tolist()
+
 
 ## Matplotlib

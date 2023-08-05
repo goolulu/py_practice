@@ -1,5 +1,12 @@
 import pymysql
 import yaml
+from sqlalchemy import Column, String, DECIMAL, create_engine
+from sqlalchemy.orm import sessionmaker
+
+
+engine = create_engine(
+    'mysql+mysqlconnector://root:123456@47.107.60.105:3306/market', pool_size=20, max_overflow=10)
+DBSession = sessionmaker(bind=engine)
 
 
 class DataSourceManager():

@@ -32,8 +32,9 @@ class StockSectorSummary(DataSourceManager):
             conn.close()
 
     def get_data(self, symbol=None, date=None):
-        frame = ak.stock_szse_sector_summary(symbol='当年', date='202306')
+        frame = ak.stock_szse_sector_summary(symbol='当年', date='202203')
         print(frame)
+        print(ak.stock_szse_sector_summary(symbol='当月', date='202203'))
         self.data = frame
 
 
@@ -43,7 +44,4 @@ def main():
 
 
 if __name__ == '__main__':
-    # d = ak.stock_zh_a_spot_em()
-    # print(d)
-
-    print(11669.91+107406.23)
+    print((53.05*100+49.820*300+48.47*200-46.340*600))
