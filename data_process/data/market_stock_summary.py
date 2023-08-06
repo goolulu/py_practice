@@ -31,8 +31,12 @@ class MarketStockSummary(Base):
         self.data = frame.fillna(value=0)
         self.write_data(date)
 
-    def write_data(self, data):
-        self.data.to_sql(self.__tablename__, engine)
+    def write_data(self, date):
+        self.data['trade_date'] = date
+        data = self.data.rename(columns=dict(zip(self.data.columns, [
+                                'assets_type', 'quantity', 'balance', 'total_market_value', 'liquid_market_value', 'trade_date'])))
+        data.to_sql(self.__tablename__, engine,
+                    if_exists='append', index=False, method='multi')
 
 
 def main():

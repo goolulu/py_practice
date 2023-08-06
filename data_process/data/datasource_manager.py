@@ -20,10 +20,8 @@ class DataSourceManager():
         self._database = config['datasource']['database']
 
     def get_datasource(self):
-        conn = pymysql.connect(host=self._host, port=self._port,
-                               user=self._user, passwd=self._passwd,
-                               database=self._database, charset='utf8mb4')
-        return conn
+
+        return engine.connect()
 
     def write_data(self, data):
         pass
