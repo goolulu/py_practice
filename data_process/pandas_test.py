@@ -1,9 +1,10 @@
 from typing import Hashable
 from urllib import request
+from uu import Error
 import pandas as pd
 from requests import request
 from bs4 import BeautifulSoup, SoupStrainer
-
+import numpy as np
 
 """
 Series
@@ -50,33 +51,44 @@ def df_declear():
 
 # 从csv读取数据
 def read_csv():
-    frame = pd.read_csv("explames\\test.csv")
+    frame = pd.read_csv("explames\\test_1.csv",
+                        encoding='gb2312')
 
     print(frame)
-    frame.to_csv("explames\\test_1.csv", index=False)
-    json = frame.to_json()
+    frame.T.to_csv("explames\\test_2.csv", header=False)
 
 
 # 从html读取
 def read_html():
-    html = request(
-        'get', 'https://interactivebrokers.github.io/tws-api/message_codes.html#system_codes')
-
-    print(html.text)
-
-    table = SoupStrainer(name='table', attrs={'class': 'doxtable'})
-    bs = BeautifulSoup(html.text, parse_only=table)
+    html = ''
+    try:
+        with open('tags.txt', encoding='utf-8') as f:
+            html = f.read()
+    except IOError as e:
+        print(e)
+        print('失败')
+        return
+    bs = BeautifulSoup(html)
     msg_code_html = bs.prettify()
 
     frame_list = pd.read_html(msg_code_html)
-    res = []
-    new_columns = ['Code', 'TWS message', 'Additional notes']
-    for i in frame_list:
-        df = i.rename(columns=dict(zip(i.columns, new_columns)))
-        res.append(df)
 
-    frame = pd.concat(res)
-    frame.to_csv("explames\\test_2.csv", index=False)
+    frame = pd.concat(frame_list)
+    frame.to_csv('jj.csv', header=False)
+
+# 层次化索引
 
 
-read_html()
+def hindexing():
+    data = pd.Series(np.arange(0, 4), index=[1, 2, 3, 4])
+
+    multi_index = pd.MultiIndex.from_arrays(
+        [[1, 1, 2, 2], ['a', 'b', 'c', 'd']])
+    data2 = pd.Series(data=data.to_numpy(), index=multi_index)
+    # print(multi_index)
+    print(data)
+    print(data2)
+
+
+def sort_and_rearrangement():
+    pass
