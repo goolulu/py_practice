@@ -1,6 +1,0 @@
-datasource:
-  host: 47.107.60.105
-  port: 3306
-  database: market
-  user: root
-  passwd: 123456
